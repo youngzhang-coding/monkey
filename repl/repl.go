@@ -8,23 +8,26 @@ import (
 	"io"
 	"monkey/evaluator"
 	"monkey/lexer"
+	"monkey/object"
 	"monkey/parser"
 )
 
 const PROMPT = ">> "
 const WELCOME_ASCII = `
- ### ###  ##   ##  ###  ##   ##  ##   ##   #  ##  ##
- #######  ##   ##  #### ##   ## ##    ## #    ##  ##
- #######  ##   ##  ## ####   ####     ####     ####
- ## # ##  ##   ##  ##  ###   ## ##    ## #      ##
- ##   ##  ##   ##  ##   ##   ##  ##   ##   #    ##
- ##   ##   #####   ##   ##  ###  ##  #######   ####
+ ##   ##   #####   ##   ##   ##  ###  ####### ##  ##
+ ### ###  ##   ##  ###  ##   ##  ##   ##      ##  ##
+ #######  ##   ##  #### ##   ## ##    ##      ##  ##
+ #######  ##   ##  ## ####   ####     ######   ####
+ ## # ##  ##   ##  ##  ###   ## ##    ##        ##
+ ##   ##  ##   ##  ##   ##   ##  ##   ##        ##
+ ##   ##   #####   ##   ##  ###  ##   #######  ####
 
 
 `
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+	environment := object.NewEnvironment()
 	fmt.Fprintf(out, WELCOME_ASCII)
 	for {
 		fmt.Fprintf(out, PROMPT)
@@ -43,7 +46,7 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		evaluated := evaluator.Eval(program)
+		evaluated := evaluator.Eval(program, environment)
 		if evaluated != nil {
 			io.WriteString(out, evaluated.Inspect()+"\n")
 		}
