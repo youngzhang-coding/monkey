@@ -1,0 +1,2 @@
+# The Monkey Programming Language
+This GitHub repository is an unofficial implementation of the Monkey interpreter. The Monkey programming language was developed by Thorsten Ball and introduced in his book *Writing an Interpreter in Go*. It is a streamlined yet fully - functional interpreted language designed for learning compilation principles. This language belongs to the category of procedural programming languages and features modern characteristics such as closures and higher - order functions.
