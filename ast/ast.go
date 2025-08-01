@@ -389,3 +389,31 @@ func (hl *HashLiteral) String() string {
 
 	return out.String()
 }
+
+type MacroLiteral struct {
+	Token 	token.Token
+	Parameters []*Identifier
+	Body 	*BlockStatement
+}
+
+func (m *MacroLiteral) expressionNode() {}
+
+func (m *MacroLiteral) TokenLiteral() string {
+	return m.Token.Literal
+}
+
+func (m *MacroLiteral) String() string {
+	var out bytes.Buffer
+
+	var params []string
+	for _, p := range m.Parameters {
+		params = append(params, p.String())
+	}
+
+	out.WriteString(m.TokenLiteral() + "(")
+	out.WriteString(strings.Join(params, ", ") + ") ")
+	out.WriteString(m.Body.String())
+
+	return out.String()
+}
+

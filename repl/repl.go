@@ -28,6 +28,7 @@ const WELCOME_ASCII = `
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
 	environment := object.NewEnvironment()
+	macroEnv := object.NewEnvironment()
 	fmt.Fprintf(out, WELCOME_ASCII)
 	for {
 		fmt.Fprintf(out, PROMPT)
@@ -45,8 +46,10 @@ func Start(in io.Reader, out io.Writer) {
 			printParseErrors(out, p.Errors())
 			continue
 		}
+		evaluator.DefineMacros(program, macroEnv)
+		expanded := evaluator.ExpandMacros(program, macroEnv)
 
-		evaluated := evaluator.Eval(program, environment)
+		evaluated := evaluator.Eval(expanded, environment)
 		if evaluated != nil {
 			io.WriteString(out, evaluated.Inspect()+"\n")
 		}
